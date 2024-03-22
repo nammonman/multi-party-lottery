@@ -103,6 +103,7 @@ contract lottery is CommitReveal {
         require(stage == 3);
         uint numValid = 0;
         uint winner = 1000;
+        address payable owner = payable(0x0571786E18ADb3b155E40FF9AcaED79016f0E7b7);
         for (uint i=1; i < numPlayer; i++) 
         {
             if (userTransaction[userNum[i]] > 999) { // bad user
@@ -124,10 +125,18 @@ contract lottery is CommitReveal {
             winner = winner % numValid;
             address payable account = payable(validUser[winner]);
             account.transfer(numPlayer*980);
+            owner.transfer(numPlayer*20);
         }
         else {
-            // confiscate reward
+            owner.transfer(numPlayer*1000);
         }
-        advanceStage(4);
+    }
+
+    function refund() public payable {
+        require(stage == 4);
+        require(userTransaction[msg.sender] >= 0 && userTransaction[msg.sender] < 1000);
+        address payable account = payable(msg.sender);
+        account.transfer(1000);
+        userTransaction[msg.sender] = 1000;
     }
 }
