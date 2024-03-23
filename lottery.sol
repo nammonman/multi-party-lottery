@@ -32,16 +32,18 @@ contract lottery is CommitReveal {
         T1 = 0;
         T2 = 0;
         T3 = 0;
+        delete validUser;
+
     }
 
     function addUser(uint transaction, uint salt) public payable {
         require(msg.value == 1000);
-        require(transaction > 0 && transaction < 999);
+        require(transaction >= 0 && transaction <= 999);
         require(currPlayer < numPlayer);
         if (startTime == 0) {
             startTime = block.timestamp;
         }
-        if (block.timestamp - startTime < T1) {
+        if (block.timestamp - startTime > T1) {
             advanceStage(2);
         }
         require(stage == 1);
@@ -57,19 +59,19 @@ contract lottery is CommitReveal {
     function advanceStage(uint _stage) public {
         if (_stage == 2) {
             require(stage == 1);
-            require(block.timestamp - startTime < T1);
+            require(block.timestamp - startTime > T1);
             stage = 2;
             startTime = 0;
         }
         if (_stage == 3) {
             require(stage == 2);
-            require(block.timestamp - startTime < T2);
+            require(block.timestamp - startTime > T2);
             stage = 3;
             startTime = 0;
         }
         if (_stage == 4) {
             require(stage == 3);
-            require(block.timestamp - startTime < T3);
+            require(block.timestamp - startTime > T3);
             stage = 4;
             startTime = 0;
         }
@@ -81,7 +83,7 @@ contract lottery is CommitReveal {
         if (startTime == 0) {
             startTime = block.timestamp;
         }
-        if (block.timestamp - startTime < T2) {
+        if (block.timestamp - startTime > T2) {
             advanceStage(3);
         }
         require(stage == 2);
@@ -97,7 +99,7 @@ contract lottery is CommitReveal {
         if (startTime == 0) {
             startTime = block.timestamp;
         }
-        if (block.timestamp - startTime < T3) {
+        if (block.timestamp - startTime > T3) {
             advanceStage(4);
         }
         require(stage == 3);
