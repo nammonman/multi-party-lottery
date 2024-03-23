@@ -39,9 +39,9 @@ contract lottery is CommitReveal {
         if (startTime == 0) {
             startTime = block.timestamp;
         }
-        if (block.timestamp - startTime > T1) {
+        /*if (block.timestamp - startTime > T1) {
             advanceStage(2);
-        }
+        }*/
         require(stage == 1);
         commit(getSaltedHash(bytes32(transaction), bytes32(transaction + salt)));
         userTransaction[msg.sender] = 1000;
@@ -82,9 +82,9 @@ contract lottery is CommitReveal {
         if (startTime == 0) {
             startTime = block.timestamp;
         }
-        if (block.timestamp - startTime > T2) {
+        /*if (block.timestamp - startTime > T2) {
             advanceStage(3);
-        }
+        }*/
         require(stage == 2);
         revealAnswer(bytes32(transaction), bytes32(transaction + salt));
         userTransaction[msg.sender] = transaction;
@@ -98,9 +98,9 @@ contract lottery is CommitReveal {
         if (startTime == 0) {
             startTime = block.timestamp;
         }
-        if (block.timestamp - startTime > T3) {
+        /*if (block.timestamp - startTime > T3) {
             advanceStage(4);
-        }
+        }*/
         require(stage == 3);
         uint numValid = 0;
         uint winner = 1000;
