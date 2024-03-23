@@ -56,6 +56,9 @@ contract lottery is CommitReveal {
         if (_stage == 2) {
             require(stage == 1);
             require(block.timestamp - startTime > T1);
+            if (numPlayer > currPlayer) {
+                numPlayer = currPlayer;
+            }
             stage = 2;
             startTime = 0;
         }
