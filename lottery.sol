@@ -5,18 +5,19 @@ pragma solidity >=0.8.2 <0.9.0;
 import "./commitreveal.sol";
 
 contract lottery is CommitReveal {
-    uint stage = 1;
-    uint numPlayer = 0;
-    uint currPlayer = 1;
-    uint numReveal = 0;
-    uint startTime = 0;
-    uint T1 = 0;
-    uint T2 = 0;
-    uint T3 = 0;
-    mapping (address => uint) userTransaction;
-    mapping (uint => address) userNum;
+    uint private stage = 1;
+    uint private numPlayer = 2;
+    uint private currPlayer = 1;
+    uint private numReveal = 0;
+    uint private startTime = 0;
+    uint private T1 = 0;
+    uint private T2 = 0;
+    uint private T3 = 0;
+    mapping (address => uint) private userTransaction;
+    mapping (uint => address) private userNum;
     address[] public validUser;
     constructor(uint _N, uint _T1, uint _T2, uint _T3) {
+        require(_N >= 2);
         numPlayer = _N;
         T1 = _T1;
         T2 = _T2;
@@ -25,15 +26,10 @@ contract lottery is CommitReveal {
 
     function reset() private  {
         stage = 1;
-        numPlayer = 0;
         currPlayer = 1;
         numReveal = 0;
         startTime = 0;
-        T1 = 0;
-        T2 = 0;
-        T3 = 0;
         delete validUser;
-
     }
 
     function addUser(uint transaction, uint salt) public payable {
